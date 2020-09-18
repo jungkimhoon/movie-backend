@@ -3,20 +3,24 @@ package com.example.movie.controller;
 import com.example.movie.dto.MovieDTO;
 import com.example.movie.dto.UserDTO;
 import com.example.movie.dto.UserRepository;
+import com.example.movie.service.JwtServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import com.example.movie.service.MovieService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class MovieController {
     private MovieService movieService;
-    private JwtService jwtService;
+    private JwtServiceImpl jwtService;
 
     private UserRepository userRepository;
 
-    public MovieController(MovieService movieService, UserRepository userRepository, JwtService jwtService) {
+    public MovieController(MovieService movieService, UserRepository userRepository, JwtServiceImpl jwtService) {
         this.movieService = movieService;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
@@ -40,10 +44,15 @@ public class MovieController {
     }
 
     @PostMapping("/user")
-    public UserDTO login(@RequestBody HashMap<String, String> map){
+    public Map<String, Object> login(@RequestBody HashMap<String, String> map){
         UserDTO loginUser = userRepository.findMember(map.get("email"), map.get("password"));
-//        String token = jwtService.create()
         if(loginUser == null) return null;
-        else return loginUser;
+        else{
+            String token = jwtService.createToken(map.get("email"), (2*1000*60));
+            HashMap<String, Object> tokenMap = new HashMap<>();
+            System.out.println(token);
+            tokenMap.put("token", token);
+            return tokenMap;
+        }
     }
 }
