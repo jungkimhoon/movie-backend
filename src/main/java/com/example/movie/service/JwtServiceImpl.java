@@ -19,7 +19,8 @@ import java.util.Map;
 @Slf4j
 @Service("jwtService")
 public class JwtServiceImpl implements JwtService{
-    private static final String SECRET_KEY = "secret";
+
+    private static final String SECRET_KEY = "accessToken";
 
     // 토큰 발행
     @Override
@@ -47,5 +48,18 @@ public class JwtServiceImpl implements JwtService{
                 .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
                 .parseClaimsJws(token).getBody();
         return claims.getSubject();
+    }
+
+    @Override
+    public boolean isUsable(String jwt) {
+        try{
+            Claims claims = Jwts.parser()
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+                    .parseClaimsJws(jwt).getBody();
+            return true;
+
+        }catch (Exception e) {
+            throw new UnauthorizedException();
+        }
     }
 }
