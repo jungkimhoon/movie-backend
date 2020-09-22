@@ -38,7 +38,10 @@ public class MovieController {
 
     @PostMapping("/user")
     public void login(@RequestBody HashMap<String, String> map, HttpServletResponse response){
+        System.out.println(map.get("email"));
+
         UserDTO loginUser = userRepository.findMember(map.get("email"), map.get("password"));
+
         if(loginUser == null) new UnauthorizedException();
         else{
             String token = jwtService.createToken(loginUser.getId()+"", (60 * 1000 * 60));
