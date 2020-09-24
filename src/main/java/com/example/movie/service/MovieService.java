@@ -18,16 +18,19 @@ import java.util.List;
 public class MovieService {
     final static String NAVER = "wp1eFPIkPNkn71JUjuX1";
     final static String NAVERSECRET = "VQsaz1sI4e";
+    final static String DISPLAY = "27";
 
-    public List<MovieDTO> movieSearch(String query){
+    public List<MovieDTO> movieSearch(String query, int page){
         BufferedReader br = null;
         String urlStr = "https://openapi.naver.com/v1/search/movie.json?query=";
-        String display = "100";
+        String display = DISPLAY;
         List<MovieDTO> movieDTOList = new ArrayList<>();
 
+        System.out.println(page);
         try {
             urlStr += URLEncoder.encode(query, "UTF-8");
             urlStr += "&display="+display;
+            urlStr += "&start="+page;
             URL url = new URL(urlStr);
 
             HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
@@ -45,8 +48,6 @@ public class MovieService {
             JsonObject movieObject = (JsonObject) jsonParser.parse(result);
             JsonArray movieItems = (JsonArray) movieObject.get("items");
 
-            System.out.println(movieItems);
-
             for (int i = 0; i < movieItems.size(); i++) {
                 JsonObject items = (JsonObject) movieItems.get(i);
 
@@ -61,7 +62,6 @@ public class MovieService {
                 MovieDTO movieDTO = new MovieDTO(title, link, image, pubDate, director, actor, userRating);
                 movieDTOList.add(movieDTO);
             }
-
 
         } catch (Exception e) {
             // TODO Auto-generated catch block

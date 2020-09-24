@@ -35,6 +35,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private static final String[] EXCLUDE_PATHS = {
             "/movie/**",
+            "/movie/**/**",
             "/user",
             "/users",
             "/"

@@ -25,9 +25,9 @@ public class MovieController {
         this.jwtService = jwtService;
     }
 
-    @GetMapping("/movie/{search}")
-    public List<MovieDTO> serchMovie(@PathVariable String search){
-        List<MovieDTO> movieDTOList = movieService.movieSearch(search);
+    @GetMapping("/movie/{search}/{page}")
+    public List<MovieDTO> serchMovie(@PathVariable String search, @PathVariable int page){
+        List<MovieDTO> movieDTOList = movieService.movieSearch(search, page);
         return movieDTOList;
     }
 
