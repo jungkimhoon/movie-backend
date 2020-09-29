@@ -1,6 +1,6 @@
 package com.example.movie.service;
 
-import com.example.movie.dto.MovieDTO;
+import com.example.movie.dto.movie.MovieDTO;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

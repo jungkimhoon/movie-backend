@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
-    private static final String HEADER_AUTH = "Authorization";
+    private static final String HEADER_AUTH = "authorization";
 
     @Autowired
     private JwtService jwtService;
@@ -19,7 +19,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         final String token = request.getHeader(HEADER_AUTH);
-
+        System.out.println(token);
         if(token != null && jwtService.isUsable(token)){
             return true;
         }else{
