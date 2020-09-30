@@ -24,9 +24,9 @@ public class JwtServiceImpl implements JwtService{
 
     // 토큰 발행
     @Override
-    public String createToken(String subject, long ttlMillis) {
-        if (ttlMillis <= 0) {
-            throw new RuntimeException("Expiry time must be greater than Zero : ["+ttlMillis+"] ");
+    public String createToken(String subject, long time) {
+        if (time <= 0) {
+            throw new RuntimeException("Expiry time must be greater than Zero : ["+time+"] ");
         }
         // 토큰을 서명하기 위해 사용해야할 알고리즘 선택
         SignatureAlgorithm  signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -36,8 +36,8 @@ public class JwtServiceImpl implements JwtService{
         JwtBuilder builder = Jwts.builder()
                 .setSubject(subject)
                 .signWith(signatureAlgorithm, signingKey);
-        long nowMillis = System.currentTimeMillis();
-        builder.setExpiration(new Date(nowMillis + ttlMillis));
+        long nowTime = System.currentTimeMillis();
+        builder.setExpiration(new Date(nowTime + time));
         return builder.compact();
     }
 
