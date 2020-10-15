@@ -35,7 +35,10 @@ public class UserController {
         System.out.println(map.get("email"));
 
         UserDTO loginUser = userRepository.findMember(map.get("email"), map.get("password"));
-        if(loginUser == null) new UnauthorizedException();
+        if(loginUser == null) {
+            new UnauthorizedException();
+            return;
+        }
         else{
             String token = jwtService.createToken(loginUser.getId()+"", (60 * 1000 * 60));
             System.out.println(token);
